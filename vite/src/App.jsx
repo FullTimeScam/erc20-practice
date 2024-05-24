@@ -1,28 +1,13 @@
 import { useEffect, useState } from "react";
 import MetamaskButton from "./components/MetamaskButton";
 import Erc20Connect from "./components/Erc20Connect";
-import { formatEther } from "ethers";
-import { IoRefresh } from "react-icons/io5";
+import Balance from "./components/balance";
 
 const App = () => {
   const [signer, setSigner] = useState();
   const [contract, setContract] = useState();
   const [name, setName] = useState();
   const [symbol, setSymbol] = useState();
-  const [balanceAddress, setBalanceAddress] = useState("");
-  const [balance, setBalance] = useState(null);
-
-  const onClickBalance = async () => {
-    try {
-      if (!balanceAddress) return;
-
-      const response = await contract.balanceOf(balanceAddress);
-
-      setBalance(response);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const getNameSymbol = async () => {
     try {
@@ -48,47 +33,10 @@ const App = () => {
       {signer && (
         <div className="mt-16 flex flex-col gap-8 grow max-w-xl w-full">
           <div className="box-style text-center">
-            0x3521b39b39CE93cC3ef47c4636a8CC861C206782
+            0x77D2DAC005A952eF61AbC3D5b460bF60c805E790
           </div>
           <Erc20Connect name={name} signer={signer} setContract={setContract} />
-          {name && (
-            <div className="flex w-full items-start">
-              <div className="flex flex-col gap-2 grow">
-                <div className="ml-1 text-lg font-bold">
-                  {name}
-                  <span className="font-normal">({symbol})</span> 토큰 확인
-                </div>
-                {balance !== null ? (
-                  <div className="box-style">
-                    {formatEther(balance)} {symbol}
-                  </div>
-                ) : (
-                  <input
-                    className="input-style"
-                    type="text"
-                    placeholder="지갑 주소"
-                    value={balanceAddress}
-                    onChange={(e) => setBalanceAddress(e.target.value)}
-                  />
-                )}
-              </div>
-              {balance ? (
-                <button
-                  className="button-style ml-4 mt-9"
-                  onClick={() => setBalance(null)}
-                >
-                  <IoRefresh size={28} />
-                </button>
-              ) : (
-                <button
-                  className="button-style ml-4 mt-9"
-                  onClick={onClickBalance}
-                >
-                  확인
-                </button>
-              )}
-            </div>
-          )}
+          {name && <Balance name={name} symbol={symbol} contract={contract} />}
         </div>
       )}
     </div>
