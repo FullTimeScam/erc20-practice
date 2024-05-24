@@ -2,8 +2,7 @@ import { formatEther } from "ethers";
 import { useState } from "react";
 import { IoRefresh } from "react-icons/io5";
 
-const Balance = ({ name, symbol, contract }) => {
-  const [balance, setBalance] = useState(null);
+const Balance = ({ name, symbol, contract, balance, setBalance }) => {
   const [balanceAddress, setBalanceAddress] = useState("");
 
   const onClickBalance = async () => {
