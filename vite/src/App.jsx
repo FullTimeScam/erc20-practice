@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import MetamaskButton from "./components/MetamaskButton";
 import Erc20Connect from "./components/Erc20Connect";
 import { formatEther } from "ethers";
+import { IoRefresh } from "react-icons/io5";
 
 const App = () => {
   const [signer, setSigner] = useState();
@@ -9,7 +10,7 @@ const App = () => {
   const [name, setName] = useState();
   const [symbol, setSymbol] = useState();
   const [balanceAddress, setBalanceAddress] = useState("");
-  const [balance, setBalance] = useState();
+  const [balance, setBalance] = useState(null);
 
   const onClickBalance = async () => {
     try {
@@ -57,7 +58,7 @@ const App = () => {
                   {name}
                   <span className="font-normal">({symbol})</span> 토큰 확인
                 </div>
-                {balance ? (
+                {balance !== null ? (
                   <div className="box-style">
                     {formatEther(balance)} {symbol}
                   </div>
@@ -71,12 +72,21 @@ const App = () => {
                   />
                 )}
               </div>
-              <button
-                className="button-style ml-4 mt-9"
-                onClick={onClickBalance}
-              >
-                확인
-              </button>
+              {balance ? (
+                <button
+                  className="button-style ml-4 mt-9"
+                  onClick={() => setBalance(null)}
+                >
+                  <IoRefresh size={28} />
+                </button>
+              ) : (
+                <button
+                  className="button-style ml-4 mt-9"
+                  onClick={onClickBalance}
+                >
+                  확인
+                </button>
+              )}
             </div>
           )}
         </div>
